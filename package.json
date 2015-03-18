@@ -1,0 +1,23 @@
+{
+  "name": "gulp-apidocjs",
+  "version": "1.0.0",
+  "description": "RESTful web API Documentation Generator for Gulp",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SamVerschueren/gulp-apidocjs.git"
+  },
+  "keywords": [
+    "apidoc",
+    "gulp"
+  ],
+  "author": "Sam Verschueren",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SamVerschueren/gulp-apidocjs/issues"
+  },
+  "homepage": "https://github.com/SamVerschueren/gulp-apidocjs"
+}
