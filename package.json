@@ -19,5 +19,12 @@
   "bugs": {
     "url": "https://github.com/SamVerschueren/gulp-apidocjs/issues"
   },
-  "homepage": "https://github.com/SamVerschueren/gulp-apidocjs"
+  "homepage": "https://github.com/SamVerschueren/gulp-apidocjs",
+  "dependencies": {
+    "apidoc": "^0.12.1",
+    "del": "^1.1.1",
+    "file": "^0.2.2",
+    "gulp-util": "^3.0.4",
+    "through2": "^0.6.3"
+  }
 }
