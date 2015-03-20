@@ -17,29 +17,69 @@ var fs = require('fs'),
     apidoc = require('apidoc');
 
 module.exports = function(options) {
-    return through.obj(function(file, enc, cb) {
-        var self = this;
+    var include = [],
+        exclude = [],
+        base;
 
+    return through.obj(function(file, enc, cb) {
         if(file.isStream()) {
+            // The plugin does not support streaming
             cb(new gutil.PluginError('gulp-apidocjs', 'Streaming not supported'));
             return;
         }
 
-        if(!file.isDirectory()) {
-            cb(new gutil.PluginError('gulp-apidocjs', 'Please provide a directory'));
+        if(base !== undefined && base !== file.base) {
+            // It's only possible to generate documentation by staying in the same base folder
+            cb(new gutil.PluginError('gulp-apidocjs', 'Could not generate apidoc from different folders.'));
             return;
         }
 
+        if(!file.isDirectory()) {
+            // If the file provided is not a directory, the base is the base of the file
+            base = file.base;
+
+            // Push the relative path from the base to the file in the includes array
+            include.push(path.relative(base, file.path));
+        }
+        else {
+            // If the file is a directory, take the entire path
+            base = file.path;
+        }
+
+        cb();
+    }, function(cb) {
+        var self = this;
+
         // This is the temporary directory where the documentation will be stored
-        var tempPath = path.normalize(path.join(file.path, '.documentation'));
+        var tempPath = path.normalize(path.join(base, '.temp'));
+
+        if(include.length > 0) {
+            // Only traverse over all the files to determine the excluded files if we have
+            // included files. If we don't have include files, it probably means the user provided
+            // us with a directory and he wants to include the entire directory.
+            f.walkSync(base, function(dirPath, dirs, files) {
+                // Iterate over every file and if it's not in the included list, it should be
+                // excluded.
+                files.forEach(function(file) {
+                    var relPath = path.relative(base, path.join(dirPath, file));
+
+                    if(include.indexOf(relPath) === -1) {
+                        exclude.push(relPath);
+                    }
+                });
+            });
+        }
 
         // Generate the documentation
         var isGenerated = apidoc.createDoc({
-            src: file.path,
-            dest: tempPath
+            src: base,
+            dest: tempPath,
+            includeFilters: include.length > 0 ? include : undefined,
+            excludeFilters: exclude.length > 0 ? exclude : undefined
         });
 
         if(!isGenerated) {
+            // Throw an error if it failed to generate
             cb(new gutil.PluginError('gulp-apidocjs', 'Could not generate the documentation'));
             return;
         }
