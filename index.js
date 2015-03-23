@@ -75,7 +75,11 @@ module.exports = function(options) {
             src: base,
             dest: tempPath,
             includeFilters: include.length > 0 ? include : undefined,
-            excludeFilters: exclude.length > 0 ? exclude : undefined
+            excludeFilters: exclude.length > 0 ? exclude : undefined,
+
+            // Set the options provided by the devleoper
+            template: options.template,
+            log: options.log
         });
 
         if(!isGenerated) {
