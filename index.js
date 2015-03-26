@@ -79,7 +79,8 @@ module.exports = function(options) {
 
             // Set the options provided by the devleoper
             template: options.template,
-            log: options.log
+            debug: options.debug === true,
+            silent: options.silent === true
         });
 
         if(!isGenerated) {

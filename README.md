@@ -22,6 +22,12 @@ gulp.task('doc', function() {
 });
 ```
 
+### Options
+
+- **template**: Directory with the template files.
+- **debug (false)**: Show debug output.
+- **silent (false)**: Show logs.
+
 ## Base path
 
 > TODO rewrite this
