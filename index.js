@@ -80,7 +80,8 @@ module.exports = function(options) {
             // Set the options provided by the devleoper
             template: options.template,
             debug: options.debug === true,
-            silent: options.silent === true
+            silent: options.silent === true,
+            markdown: options.markdown !== false
         });
 
         if(!isGenerated) {

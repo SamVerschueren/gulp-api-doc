@@ -26,7 +26,8 @@ gulp.task('doc', function() {
 
 - **template**: Directory with the template files.
 - **debug (false)**: Show debug output.
-- **silent (false)**: Show logs.
+- **silent (false)**: Hide log output.
+- **markdown (true)**: Parse markdown statements in the documentation.
 
 ## Base path
 
