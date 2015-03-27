@@ -1,4 +1,4 @@
-# gulp-apidoc
+# gulp-api-doc
 
 > Generates a RESTful web API Documentation with [apiDoc](https://github.com/apidoc/apidoc).
 
@@ -6,7 +6,7 @@
 ## Installation
 
 ```bash
-npm install --save-dev gulp-apidoc
+npm install --save-dev gulp-api-doc
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ Generate documentation for the entire ```controllers``` directory.
 
 ```JavaScript
 var gulp = require('gulp'),
-    apidoc = require('gulp-apidoc');
+    apidoc = require('gulp-api-doc');
 
 gulp.task('doc', function() {
     return gulp.src('controllers')
