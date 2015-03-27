@@ -11,13 +11,25 @@ npm install --save-dev gulp-apidocjs
 
 ## Usage
 
+Generate documentation for the entire ```controllers``` directory.
+
 ```JavaScript
 var gulp = require('gulp'),
     apidoc = require('gulp-apidocjs');
 
 gulp.task('doc', function() {
-    return gulp.src('controllers/**/*.js')
+    return gulp.src('controllers')
         .pipe(apidoc())
+        .pipe(gulp.dest('documentation'));
+});
+```
+
+Generate documentation for all the ```controllers```, except for the ones in the ```auth``` folder and don't parse markdown statements.
+
+```JavaScript
+gulp.task('doc', function() {
+    return gulp.src(['controllers/**/*.js', '!controllers/auth/*.js'])
+        .pipe(apidoc({markdown: false}))
         .pipe(gulp.dest('documentation'));
 });
 ```
@@ -36,32 +48,6 @@ gulp.task('doc', function() {
     - **sanitize (false)**: Sanitize the output. Ignore any HTML that has been input.
     - **smartLists (true)**: Use smarter list behaviour than the original markdown.
     - **smartypants (false)**: Use "smart" typographic punctuation for things like quotes and dashes.
-
-## Base path
-
-> TODO rewrite this
-
-Make sure that the base path of all the files provided is the same. It's not yet possible to this.
-
-```JavaScript
-gulp.task('doc', function() {
-    return gulp.src(['controllers/*.js', 'controllers/auth/*.js'])
-        .pipe(apidoc())
-        .pipe(gulp.dest('doc'));
-});
-```
-
-The reason for this is that we now have two different base paths, the first begin ```controllers```, the second begin ```controllers/auth```. This is not something apidoc can handle. What is possible though, is the following source.
-
-```JavaScript
-gulp.task('doc', function() {
-    return gulp.src(['controllers/**/*.js', '!controllers/auth/*.js'])
-        .pipe(apidoc())
-        .pipe(gulp.dest('doc'));
-});
-```
-
-This means, take all the files in the controllers directory, including those in subdirectories, but exclude those files from the auth directory. This is possible because gulp handles the exclusion itself.
 
 ## Contributors
 

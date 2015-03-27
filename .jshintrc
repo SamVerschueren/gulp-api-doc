@@ -1,4 +1,5 @@
 {
     "globalstrict": true,
-    "node": true
+    "node": true,
+    "curly": true
 }
