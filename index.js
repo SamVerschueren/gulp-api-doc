@@ -17,6 +17,8 @@ var fs = require('fs'),
     apidoc = require('apidoc');
 
 module.exports = function(options) {
+    options = options || {};
+
     var include = [],
         exclude = [],
         base;
@@ -81,7 +83,8 @@ module.exports = function(options) {
             template: options.template,
             debug: options.debug === true,
             silent: options.silent === true,
-            markdown: options.markdown !== false
+            markdown: options.markdown !== false,
+            marked: options.marked
         });
 
         if(!isGenerated) {
