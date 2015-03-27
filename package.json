@@ -1,5 +1,5 @@
 {
-  "name": "gulp-apidocjs",
+  "name": "gulp-apidoc",
   "version": "1.0.0",
   "description": "RESTful web API Documentation Generator for Gulp",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/SamVerschueren/gulp-apidocjs.git"
+    "url": "https://github.com/SamVerschueren/gulp-apidoc.git"
   },
   "keywords": [
     "apidoc",
@@ -17,9 +17,9 @@
   "author": "Sam Verschueren",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/SamVerschueren/gulp-apidocjs/issues"
+    "url": "https://github.com/SamVerschueren/gulp-apidoc/issues"
   },
-  "homepage": "https://github.com/SamVerschueren/gulp-apidocjs",
+  "homepage": "https://github.com/SamVerschueren/gulp-apidoc",
   "dependencies": {
     "apidoc": "^0.12.1",
     "del": "^1.1.1",

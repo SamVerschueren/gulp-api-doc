@@ -26,13 +26,13 @@ module.exports = function(options) {
     return through.obj(function(file, enc, cb) {
         if(file.isStream()) {
             // The plugin does not support streaming
-            cb(new gutil.PluginError('gulp-apidocjs', 'Streaming not supported'));
+            cb(new gutil.PluginError('gulp-apidoc', 'Streaming not supported'));
             return;
         }
 
         if(base !== undefined && base !== file.base) {
             // It's only possible to generate documentation by staying in the same base folder
-            cb(new gutil.PluginError('gulp-apidocjs', 'Could not generate apidoc from different folders.'));
+            cb(new gutil.PluginError('gulp-apidoc', 'Could not generate apidoc from different folders.'));
             return;
         }
 
@@ -89,7 +89,7 @@ module.exports = function(options) {
 
         if(!isGenerated) {
             // Throw an error if it failed to generate
-            cb(new gutil.PluginError('gulp-apidocjs', 'Could not generate the documentation'));
+            cb(new gutil.PluginError('gulp-apidoc', 'Could not generate the documentation'));
             return;
         }
 
