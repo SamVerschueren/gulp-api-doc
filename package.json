@@ -4,7 +4,7 @@
   "description": "RESTful web API Documentation Generator for Gulp",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "node_modules/.bin/mocha test.js"
   },
   "repository": {
     "type": "git",
@@ -29,5 +29,13 @@
     "file": "^0.2.2",
     "gulp-util": "^3.0.4",
     "through2": "^0.6.3"
+  },
+  "devDependencies": {
+    "chai": "^2.2.0",
+    "concat-stream": "^1.4.7",
+    "gulp": "^3.8.11",
+    "mocha": "^2.2.1",
+    "sinon": "^1.14.1",
+    "sinon-chai": "^2.7.0"
   }
 }

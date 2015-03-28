@@ -1,5 +1,12 @@
 {
     "globalstrict": true,
     "node": true,
-    "curly": true
+    "curly": true,
+
+    "globals": {
+        "describe": false,
+        "it": false,
+        "beforeEach": false,
+        "afterEach": false
+    }
 }
