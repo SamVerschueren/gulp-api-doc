@@ -1,7 +1,8 @@
 # gulp-api-doc
 
-> Generates a RESTful web API Documentation with [apiDoc](https://github.com/apidoc/apidoc).
+[![Build Status](http://img.shields.io/travis/SamVerschueren/gulp-api-doc.svg)](https://travis-ci.org/SamVerschueren/gulp-api-doc)
 
+> Generates a RESTful web API Documentation with [apiDoc](https://github.com/apidoc/apidoc).
 
 ## Installation
 

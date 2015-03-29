@@ -51,4 +51,45 @@ describe('gulp-api-doc', function() {
                 done();
             }));
     }));
+
+    it('Should set the the debug property', sinon.test(function(done) {
+        this.spy(apidocjs, 'createDoc');
+
+        gulp.src(['fixtures/**/*.js'])
+            .pipe(apidoc({debug: true, silent: true}))
+            .pipe(concatStream(function() {
+                var args = apidocjs.createDoc.args[0][0];
+
+                args.debug.should.be.true;
+
+                done();
+            }));
+    }));
+
+    it('Should set the the markdown property', sinon.test(function(done) {
+        this.spy(apidocjs, 'createDoc');
+
+        gulp.src(['fixtures/**/*.js'])
+            .pipe(apidoc({markdown: false, silent: true}))
+            .pipe(concatStream(function() {
+                var args = apidocjs.createDoc.args[0][0];
+
+                args.markdown.should.be.false;
+
+                done();
+            }));
+    }));
+
+    it('Should throw an error if creating the documentation failed', sinon.test(function(done) {
+        this.stub(apidocjs, 'createDoc').returns(undefined);
+
+        var stream = gulp.src(['fixtures/**/*.js'])
+            .pipe(apidoc({markdown: false, silent: true}));
+
+        stream.on('error', function(err) {
+            should.exist(err);
+
+            done();
+        });
+    }));
 });
