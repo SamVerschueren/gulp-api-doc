@@ -4,7 +4,8 @@
   "description": "RESTful web API Documentation Generator for Gulp",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha test.js"
+    "test": "node_modules/.bin/mocha test.js",
+    "coveralls": "node_modules/.bin/istanbul cover _mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | node_modules/.bin/coveralls && rm -rf ./coverage"
   },
   "repository": {
     "type": "git",
@@ -33,7 +34,9 @@
   "devDependencies": {
     "chai": "^2.2.0",
     "concat-stream": "^1.4.7",
+    "coveralls": "^2.11.2",
     "gulp": "^3.8.11",
+    "istanbul": "^0.3.11",
     "mocha": "^2.2.1",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.7.0"

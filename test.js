@@ -22,13 +22,31 @@ chai.use(sinonChai);
 
 describe('gulp-api-doc', function() {
 
-    it('Should call the createDoc method only once', sinon.test(function(done) {
+    it('Should call the createDoc method if files are passed in', sinon.test(function(done) {
         this.spy(apidocjs, 'createDoc');
 
         gulp.src(['fixtures/**/*.js'])
             .pipe(apidoc({silent: true}))
             .pipe(concatStream(function() {
+                var args = apidocjs.createDoc.args[0][0];
+
                 apidocjs.createDoc.should.be.calledOnce;
+                args.src.should.be.equal(__dirname + '/fixtures/');
+
+                done();
+            }));
+    }));
+
+    it('Should call the createDoc method with the correct source if a folder is passed in', sinon.test(function(done) {
+        this.spy(apidocjs, 'createDoc');
+
+        gulp.src('fixtures/')
+            .pipe(apidoc({silent: true}))
+            .pipe(concatStream(function() {
+                var args = apidocjs.createDoc.args[0][0];
+
+                apidocjs.createDoc.should.be.calledOnce;
+                args.src.should.be.equal(__dirname + '/fixtures');
 
                 done();
             }));
