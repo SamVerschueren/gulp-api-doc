@@ -119,7 +119,20 @@ describe('gulp-api-doc', function() {
         this.stub(apidocjs, 'createDoc').returns(undefined);
 
         var stream = gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc({markdown: false, silent: true}));
+            .pipe(apidoc({silent: true}));
+
+        stream.on('error', function(err) {
+            should.exist(err);
+
+            done();
+        });
+    }));
+
+    it('Should throw an error if the base paths are not the same', sinon.test(function(done) {
+        this.stub(apidocjs, 'createDoc').returns(undefined);
+
+        var stream = gulp.src(['fixtures/**/*.js', './**/*.js'])
+            .pipe(apidoc({silent: true}));
 
         stream.on('error', function(err) {
             should.exist(err);
