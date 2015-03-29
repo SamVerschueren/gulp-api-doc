@@ -1,6 +1,7 @@
 # gulp-api-doc
 
 [![Build Status](http://img.shields.io/travis/SamVerschueren/gulp-api-doc.svg)](https://travis-ci.org/SamVerschueren/gulp-api-doc)
+[![Coverage Status](http://img.shields.io/coveralls/SamVerschueren/gulp-api-doc/master.svg)](https://coveralls.io/r/SamVerschueren/gulp-api-doc)
 
 > Generates a RESTful web API Documentation with [apiDoc](https://github.com/apidoc/apidoc).
 
