@@ -149,4 +149,15 @@ describe('gulp-api-doc', function() {
             done();
         });
     });
+
+    it('Should throw an error if streams are used instead of buffers', function(done) {
+        var stream = gulp.src(['fixtures/**/*.js', './**/*.js'], {buffer: false})
+            .pipe(apidoc({silent: true}));
+
+        stream.on('error', function(err) {
+            should.exist(err);
+
+            done();
+        });
+    });
 });
