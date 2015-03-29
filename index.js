@@ -50,6 +50,11 @@ module.exports = function(options) {
 
         cb();
     }, function(cb) {
+        if(base === undefined) {
+            cb(new gutil.PluginError('gulp-api-doc', 'Please provide some files.'));
+            return;
+        }
+
         var self = this;
 
         // This is the temporary directory where the documentation will be stored

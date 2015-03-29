@@ -128,9 +128,7 @@ describe('gulp-api-doc', function() {
         });
     }));
 
-    it('Should throw an error if the base paths are not the same', sinon.test(function(done) {
-        this.stub(apidocjs, 'createDoc').returns(undefined);
-
+    it('Should throw an error if the base paths are not the same', function(done) {
         var stream = gulp.src(['fixtures/**/*.js', './**/*.js'])
             .pipe(apidoc({silent: true}));
 
@@ -139,5 +137,16 @@ describe('gulp-api-doc', function() {
 
             done();
         });
-    }));
+    });
+
+    it('Should throw an error if the source passed in does not exist', function(done) {
+        var stream = gulp.src('notexisting')
+            .pipe(apidoc({silent: true}));
+
+        stream.on('error', function(err) {
+            should.exist(err);
+
+            done();
+        });
+    });
 });
