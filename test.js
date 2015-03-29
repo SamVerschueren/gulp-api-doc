@@ -26,7 +26,7 @@ describe('gulp-api-doc', function() {
         this.spy(apidocjs, 'createDoc');
 
         gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc({silent: true}))
+            .pipe(apidoc())
             .pipe(concatStream(function() {
                 var args = apidocjs.createDoc.args[0][0];
 
@@ -60,11 +60,28 @@ describe('gulp-api-doc', function() {
             .pipe(concatStream(function() {
                 var args = apidocjs.createDoc.args[0][0];
 
+                args.includeFilters.should.be.eql(['doc.js', 'subfolder/subdoc.js']);
+                should.not.exist(args.excludeFilters);
                 should.not.exist(args.template);
                 args.debug.should.be.false;
                 args.silent.should.be.true;
                 args.markdown.should.be.true;
                 should.not.exist(args.marked);
+
+                done();
+            }));
+    }));
+
+    it('Should exclude files', sinon.test(function(done) {
+        this.spy(apidocjs, 'createDoc');
+
+        gulp.src(['fixtures/**/*.js', '!fixtures/subfolder/*.js'])
+            .pipe(apidoc({silent: true}))
+            .pipe(concatStream(function() {
+                var args = apidocjs.createDoc.args[0][0];
+
+                args.includeFilters.should.be.eql(['doc.js']);
+                args.excludeFilters.should.be.eql(['subfolder/subdoc.js']);
 
                 done();
             }));

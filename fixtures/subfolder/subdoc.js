@@ -3,9 +3,9 @@
 /**
  * @apiDescription This is a test method.
  *
- * @api {GET} /test/method Test method
- * @apiName TestMethod
- * @apiGroup Test
+ * @api {GET} /sub/test/method Test method
+ * @apiName SubTestMethod
+ * @apiGroup SubTest
  * @apiVersion 1.0.0
  *
  * @apiSuccess (Success) {Object} 200 If the call was successfull.
