@@ -14,6 +14,6 @@
  *     "foo": "bar"
  * }
  */
-exports.docmethod = function() {
+exports.docmethod = function () {
     // Do nothing
 };

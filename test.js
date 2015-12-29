@@ -1,163 +1,55 @@
-/* jshint expr:true */
-'use strict';
+import test from 'ava';
+import globby from 'globby';
+import gutil from 'gulp-util';
+import path from 'path';
+import fs from 'fs';
+import fileExists from 'file-exists';
+import fn from './';
 
-/**
- * Test file for gulp-api-doc
- *
- * @author Sam Verschueren      <sam.verschueren@gmail.com>
- * @since  28 Mar. 2015
- */
+function run(patterns, opts) {
+	return globby(patterns).then(paths => {
+		return new Promise((resolve, reject) => {
+			const stream = fn(opts);
+			let dest;
 
-// module dependencies
-var chai = require('chai'),
-    sinon = require('sinon'),
-    sinonChai = require('sinon-chai'),
-    gulp = require('gulp'),
-    concatStream = require('concat-stream'),
-    apidocjs = require('apidoc'),
-    apidoc = require('./');
+			stream.on('data', d => {
+				dest = d.base;
+			});
 
-var should = chai.should();
-chai.use(sinonChai);
+			stream.on('error', reject);
 
-describe('gulp-api-doc', function() {
+			stream.on('end', () => {
+				resolve(dest);
+			});
 
-    it('Should call the createDoc method if files are passed in', sinon.test(function(done) {
-        this.spy(apidocjs, 'createDoc');
+			paths.forEach(file => {
+				const options = {
+					cwd: __dirname,
+					base: file.split(path.sep).shift(),
+					path: file,
+					stat: fs.statSync(file)
+				};
 
-        gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc())
-            .pipe(concatStream(function() {
-                var args = apidocjs.createDoc.args[0][0];
+				if (!options.stat.isDirectory()) {
+					options.contents = fs.readFileSync(file);
+				}
 
-                apidocjs.createDoc.should.be.calledOnce;
-                args.src.should.be.equal(__dirname + '/fixtures/');
+				stream.write(new gutil.File(options));
+			});
 
-                done();
-            }));
-    }));
+			stream.end();
+		});
+	});
+}
 
-    it('Should call the createDoc method with the correct source if a folder is passed in', sinon.test(function(done) {
-        this.spy(apidocjs, 'createDoc');
+test('files are passed in', async t => {
+	const dest = await run(['fixtures/**/*.js']);
 
-        gulp.src('fixtures/')
-            .pipe(apidoc({silent: true}))
-            .pipe(concatStream(function() {
-                var args = apidocjs.createDoc.args[0][0];
+	t.true(fileExists(path.join(dest, 'index.html')));
+});
 
-                apidocjs.createDoc.should.be.calledOnce;
-                args.src.should.be.equal(__dirname + '/fixtures');
+test('directory is passed in', async t => {
+	const dest = await run('fixtures');
 
-                done();
-            }));
-    }));
-
-    it('Should call the createDoc method with the correct properties', sinon.test(function(done) {
-        this.spy(apidocjs, 'createDoc');
-
-        gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc({silent: true}))
-            .pipe(concatStream(function() {
-                var args = apidocjs.createDoc.args[0][0];
-
-                args.includeFilters.should.be.eql(['doc.js', 'subfolder/subdoc.js']);
-                should.not.exist(args.excludeFilters);
-                should.not.exist(args.template);
-                args.debug.should.be.false;
-                args.silent.should.be.true;
-                args.markdown.should.be.true;
-                should.not.exist(args.marked);
-
-                done();
-            }));
-    }));
-
-    it('Should exclude files', sinon.test(function(done) {
-        this.spy(apidocjs, 'createDoc');
-
-        gulp.src(['fixtures/**/*.js', '!fixtures/subfolder/*.js'])
-            .pipe(apidoc({silent: true}))
-            .pipe(concatStream(function() {
-                var args = apidocjs.createDoc.args[0][0];
-
-                args.includeFilters.should.be.eql(['doc.js']);
-                args.excludeFilters.should.be.eql(['subfolder/subdoc.js']);
-
-                done();
-            }));
-    }));
-
-    it('Should set the the debug property', sinon.test(function(done) {
-        this.spy(apidocjs, 'createDoc');
-
-        gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc({debug: true, silent: true}))
-            .pipe(concatStream(function() {
-                var args = apidocjs.createDoc.args[0][0];
-
-                args.debug.should.be.true;
-
-                done();
-            }));
-    }));
-
-    it('Should set the the markdown property', sinon.test(function(done) {
-        this.spy(apidocjs, 'createDoc');
-
-        gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc({markdown: false, silent: true}))
-            .pipe(concatStream(function() {
-                var args = apidocjs.createDoc.args[0][0];
-
-                args.markdown.should.be.false;
-
-                done();
-            }));
-    }));
-
-    it('Should throw an error if creating the documentation failed', sinon.test(function(done) {
-        this.stub(apidocjs, 'createDoc').returns(undefined);
-
-        var stream = gulp.src(['fixtures/**/*.js'])
-            .pipe(apidoc({silent: true}));
-
-        stream.on('error', function(err) {
-            should.exist(err);
-
-            done();
-        });
-    }));
-
-    it('Should throw an error if the base paths are not the same', function(done) {
-        var stream = gulp.src(['fixtures/**/*.js', './**/*.js'])
-            .pipe(apidoc({silent: true}));
-
-        stream.on('error', function(err) {
-            should.exist(err);
-
-            done();
-        });
-    });
-
-    it('Should throw an error if the source passed in does not exist', function(done) {
-        var stream = gulp.src('notexisting')
-            .pipe(apidoc({silent: true}));
-
-        stream.on('error', function(err) {
-            should.exist(err);
-
-            done();
-        });
-    });
-
-    it('Should throw an error if streams are used instead of buffers', function(done) {
-        var stream = gulp.src(['fixtures/**/*.js', './**/*.js'], {buffer: false})
-            .pipe(apidoc({silent: true}));
-
-        stream.on('error', function(err) {
-            should.exist(err);
-
-            done();
-        });
-    });
+	t.true(fileExists(path.join(dest, 'index.html')));
 });
