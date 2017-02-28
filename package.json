@@ -1,6 +1,6 @@
 {
   "name": "gulp-api-doc",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "RESTful web API Documentation Generator for Gulp",
   "main": "index.js",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/SamVerschueren/gulp-api-doc",
   "dependencies": {
-    "apidoc": "^0.14.0",
+    "apidoc": "^0.17.5",
     "file": "^0.2.2",
     "file-exists": "^1.0.0",
     "gulp-util": "^3.0.4",
