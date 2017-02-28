@@ -1,6 +1,6 @@
 {
   "name": "gulp-api-doc",
-  "version": "1.1.1",
+  "version": "1.1.0",
   "description": "RESTful web API Documentation Generator for Gulp",
   "main": "index.js",
   "scripts": {
