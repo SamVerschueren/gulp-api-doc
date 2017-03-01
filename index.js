@@ -1,20 +1,20 @@
 'use strict';
-var fs = require('fs');
-var path = require('path');
-var f = require('file');
-var gutil = require('gulp-util');
-var through = require('through2');
-var apidoc = require('apidoc');
-var tempfile = require('tempfile');
+const fs = require('fs');
+const path = require('path');
+const f = require('file');
+const gutil = require('gulp-util');
+const through = require('through2');
+const apidoc = require('apidoc');
+const tempfile = require('tempfile');
 
-module.exports = function (options) {
+module.exports = options => {
 	options = options || {};
 
-	var include = [];
-	var exclude = [];
-	var base;
+	const include = [];
+	const exclude = [];
+	let base;
 
-	return through.obj(function (file, enc, cb) {
+	return through.obj((file, enc, cb) => {
 		if (file.isStream()) {
 			// The plugin does not support streaming
 			cb(new gutil.PluginError('gulp-api-doc', 'Streaming not supported'));
@@ -45,20 +45,18 @@ module.exports = function (options) {
 			return;
 		}
 
-		var self = this;
-
 		// This is the temporary directory where the documentation will be stored
-		var tempPath = tempfile();
+		const tempPath = tempfile();
 
 		if (include.length > 0) {
 			// Only traverse over all the files to determine the excluded files if we have
 			// included files. If we don't have include files, it probably means the user provided
 			// us with a directory and he wants to include the entire directory.
-			f.walkSync(base, function (dirPath, dirs, files) {
+			f.walkSync(base, (dirPath, dirs, files) => {
 				// Iterate over every file and if it's not in the included list, it should be
 				// excluded.
-				files.forEach(function (file) {
-					var relPath = path.relative(base, path.join(dirPath, file));
+				files.forEach(file => {
+					const relPath = path.relative(base, path.join(dirPath, file));
 
 					if (include.indexOf(relPath) === -1) {
 						exclude.push(relPath);
@@ -68,7 +66,7 @@ module.exports = function (options) {
 		}
 
 		// Generate the documentation
-		var isGenerated = apidoc.createDoc({
+		const isGenerated = apidoc.createDoc({
 			src: base,
 			dest: tempPath,
 			includeFilters: include.length > 0 ? include : undefined,
@@ -89,12 +87,12 @@ module.exports = function (options) {
 		}
 
 		// Retrieve all files recursively in the temporary directory
-		f.walkSync(tempPath, function (dirPath, dirs, files) {
+		f.walkSync(tempPath, (dirPath, dirs, files) => {
 			// Iterate over the files and create a File object
-			files.forEach(function (file) {
-				var content = fs.readFileSync(path.join(dirPath, file));
+			files.forEach(file => {
+				const content = fs.readFileSync(path.join(dirPath, file));
 
-				self.push(new gutil.File({
+				this.push(new gutil.File({
 					base: tempPath,
 					cwd: tempPath,
 					path: path.join(dirPath, file),
