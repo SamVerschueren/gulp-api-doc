@@ -2,11 +2,13 @@
 
 > Generates a RESTful web API Documentation with [apiDoc](https://github.com/apidoc/apidoc).
 
+
 ## Installation
 
 ```
 npm install --save-dev gulp-api-doc
 ```
+
 
 ## Usage
 
@@ -47,6 +49,7 @@ gulp.task('doc', () => {
     - **sanitize (false)**: Sanitize the output. Ignore any HTML that has been input.
     - **smartLists (true)**: Use smarter list behaviour than the original markdown.
     - **smartypants (false)**: Use "smart" typographic punctuation for things like quotes and dashes.
+
 
 ## License (MIT)
 

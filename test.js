@@ -1,8 +1,8 @@
+import path from 'path';
+import fs from 'fs';
 import test from 'ava';
 import globby from 'globby';
 import gutil from 'gulp-util';
-import path from 'path';
-import fs from 'fs';
 import fileExists from 'file-exists';
 import fn from './';
 
