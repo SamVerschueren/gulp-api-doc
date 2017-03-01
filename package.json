@@ -1,6 +1,6 @@
 {
   "name": "gulp-api-doc",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "RESTful web API Documentation Generator for Gulp",
   "license": "MIT",
   "repository": "SamVerschueren/gulp-api-doc",
