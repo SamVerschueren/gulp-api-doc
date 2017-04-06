@@ -3,7 +3,7 @@ import fs from 'fs';
 import test from 'ava';
 import globby from 'globby';
 import gutil from 'gulp-util';
-import fileExists from 'file-exists';
+import pathExists from 'path-exists';
 import fn from './';
 
 function run(patterns, opts) {
@@ -45,11 +45,17 @@ function run(patterns, opts) {
 test('files are passed in', async t => {
 	const dest = await run(['fixtures/**/*.js']);
 
-	t.true(fileExists(path.join(dest, 'index.html')));
+	t.true(pathExists.sync(path.join(dest, 'index.html')));
 });
 
 test('directory is passed in', async t => {
 	const dest = await run('fixtures');
 
-	t.true(fileExists(path.join(dest, 'index.html')));
+	t.true(pathExists.sync(path.join(dest, 'index.html')));
+});
+
+test('no documentation found', async t => {
+	const dest = await run('fixtures/nodoc');
+
+	t.falsy(dest);
 });

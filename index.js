@@ -6,6 +6,7 @@ const gutil = require('gulp-util');
 const through = require('through2');
 const apidoc = require('apidoc');
 const tempfile = require('tempfile');
+const pathExists = require('path-exists');
 
 module.exports = options => {
 	options = options || {};
@@ -86,20 +87,22 @@ module.exports = options => {
 			return;
 		}
 
-		// Retrieve all files recursively in the temporary directory
-		f.walkSync(tempPath, (dirPath, dirs, files) => {
-			// Iterate over the files and create a File object
-			files.forEach(file => {
-				const content = fs.readFileSync(path.join(dirPath, file));
+		if (pathExists.sync(tempPath)) {
+			// Retrieve all files recursively in the temporary directory
+			f.walkSync(tempPath, (dirPath, dirs, files) => {
+				// Iterate over the files and create a File object
+				files.forEach(file => {
+					const content = fs.readFileSync(path.join(dirPath, file));
 
-				this.push(new gutil.File({
-					base: tempPath,
-					cwd: tempPath,
-					path: path.join(dirPath, file),
-					contents: new Buffer(content)
-				}));
+					this.push(new gutil.File({
+						base: tempPath,
+						cwd: tempPath,
+						path: path.join(dirPath, file),
+						contents: Buffer.from(content)
+					}));
+				});
 			});
-		});
+		}
 
 		cb();
 	});
